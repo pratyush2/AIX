@@ -1,0 +1,93 @@
+#!/usr/bin/ksh
+##########################################################################
+# Modification History
+# 04/03/03 sonnie   Added header and trailer to prevent script from
+#                   accidentally executed and check for existing r files.
+##########################################################################
+
+if [ -f /usr/local/scripts/disable_rsh ]; then
+	echo "\n***        Script enable_rsh has already been executed      ***\n"
+	echo "\n***  Please execute disable_rsh if you want to disable rsh  ***\n"
+        echo "***     Press [RETURN] key to continue to exit     ***"
+        read keypress
+	exit 0
+fi
+
+if [ -f /usr/bin/rsh ]; then
+	rm /usr/bin/rsh
+	cp -p /usr/bin/rsh.secaix /usr/bin/rsh
+else
+	echo "\nNOTICE: rsh is not in /usr/bin.  Please check!!!\n"
+        echo "*** Press [RETURN] key to continue or [CTRL C] to exit ***"
+        read keypress
+fi
+
+if [ -f /usr/bin/rcp ]; then
+        rm /usr/bin/rcp
+        cp -p /usr/bin/rcp.secaix /usr/bin/rcp
+else
+        echo "\nNOTICE: rcp is not in /usr/bin.  Please check!!!\n"
+        echo "*** Press [RETURN] key to continue or [CTRL C] to exit ***"
+        read keypress
+fi
+
+if [ -f /usr/bin/rlogin ]; then
+        rm /usr/bin/rlogin
+        cp -p /usr/bin/rlogin.secaix /usr/bin/rlogin
+else
+        echo "\nNOTICE: rlogin is not in /usr/bin.  Please check!!!\n"
+        echo "*** Press [RETURN] key to continue or [CTRL C] to exit ***"
+        read keypress
+fi
+
+if [ -f /usr/bin/tftp ]; then
+        rm /usr/bin/tftp
+        cp -p /usr/bin/tftp.secaix /usr/bin/tftp
+else
+        echo "\nNOTICE: tftp is not in /usr/bin.  Please check!!!\n"
+        echo "*** Press [RETURN] key to continue or [CTRL C] to exit ***"
+        read keypress
+fi
+
+if [ -f /usr/sbin/rlogind ]; then
+        rm /usr/sbin/rlogind
+        cp -p /usr/sbin/rlogind.secaix /usr/sbin/rlogind
+else
+        echo "\nNOTICE: rlogind is not in /usr/sbin.  Please check!!!\n"
+        echo "***     Press [RETURN] key to continue to exit     ***"
+        read keypress
+fi
+
+if [ -f /usr/sbin/rshd ]; then
+        rm /usr/sbin/rshd
+        cp -p /usr/sbin/rshd.secaix /usr/sbin/rshd
+else
+        echo "\nNOTICE: rshd is not in /usr/sbin.  Please check!!!\n"
+        echo "***     Press [RETURN] key to continue to exit     ***"
+        read keypress
+fi
+
+if [ -f /usr/sbin/tftpd ]; then
+        rm /usr/sbin/tftpd
+        cp -p /usr/sbin/tftpd.secaix /usr/sbin/tftpd
+else
+        echo "\nNOTICE: rshd is not in /usr/sbin.  Please check!!!\n"
+        echo "***     Press [RETURN] key to continue to exit     ***"
+	read keypress
+fi
+
+if [ -f /usr/sbin/trpt ]; then
+        rm /usr/sbin/trpt
+        cp -p /usr/sbin/trpt.secaix /usr/sbin/trpt
+else
+        echo "\nNOTICE: trpt is not in /usr/sbin.  Please check!!!\n"
+        echo "***     Press [RETURN] key to continue to exit     ***"
+        read keypress
+fi
+chuser rlogin=true root
+refresh -s inetd
+echo "####################################################################"
+echo "#  Completed the enabling r commands                               #"
+echo "####################################################################"
+mv /usr/local/scripts/_disable /usr/local/scripts/disable_rsh
+exit 0

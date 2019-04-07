@@ -1,0 +1,48 @@
+#!/bin/ksh
+#
+##########################################################################
+#
+#
+#  This script follows the guidelines specified in the UNIX Security
+#  Configuration Specifications.
+#
+#	Written for USS by ricardo vara of myriad-solutions.
+#
+#	This script backs up all files, commands, daemons that are changed.
+#	It renames those files with an extension of .secaix 
+#	You can back off the changes by running the undo_secureaix script.
+#	
+# Modification History
+# 08/22/01 plm	Cleaned up the code and corrected a few problems.
+# 12/12/01 saul	change ktazd216 mount point from ktazd216:/tcpwraper
+#	       	to ktazd216:/misc.
+# 04/03/03 sonnie   Added header and trailer to prevent script from
+#                   accidentally executed.
+##########################################################################
+if [ -f /usr/local/scripts/_disable ]; then
+        echo "\n***     Script disable_rsh has already been executed    ***\
+n"
+        echo "\n*** Please execute enable_rsh if you want to enable rsh ***\
+n"
+        echo "\n***        Press [RETURN] key to continue to exit       ***"
+        read keypress
+        exit 0
+fi
+
+if lslpp -l | grep cluster || lslpp -l | grep ssp.basic 
+   then
+   echo "\nThis System is HA or SP2 and the securetcpip command will not be run"
+else
+    echo "\nThis System is not HA or SP2"
+    echo "Running securetcpip"
+    /usr/bin/touch /.rhosts /.netrc
+    /usr/bin/chmod 0 /.rhosts /.netrc /etc/hosts.equiv
+    /etc/securetcpip
+fi
+chuser rlogin=false root
+echo "####################################################################"
+echo "#  Completed disabling r commands                                  #"
+echo "#  To enable r commands run enable_rsh                             #"
+echo "####################################################################"
+mv /usr/local/scripts/disable_rsh /usr/local/scripts/_disable
+exit
